@@ -1,0 +1,5 @@
+opencv-python-headless
+kafka-python
+metaflow
+torch
+torchvision
