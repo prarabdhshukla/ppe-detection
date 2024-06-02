@@ -13,8 +13,8 @@ class PersonDetector:
 
         return results.xyxy[0]
     
-    def is_person_detected(results):
-        for det in results:
-            if int(det[-1]) == 0:
-                return True
-        return False
+def is_person_detected(results):
+    for det in results:
+        if int(det[-1]) == 0:
+            return True
+    return False

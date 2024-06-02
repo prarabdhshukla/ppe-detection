@@ -6,6 +6,7 @@ COPY requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt 
 
-COPY . .
+COPY src/ src/
+COPY data/ data/
 
-CMD ["python", "src/main.py"]
+CMD ["python", "src/utils/kafka_consumer.py"]

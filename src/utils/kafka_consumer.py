@@ -1,9 +1,12 @@
 from kafka import KafkaConsumer, KafkaProducer
 import cv2
 import numpy as np
-from src.frame_detection.frame_detection import FrameDetector
-from src.person_detection.person_detection import PersonDetector, is_person_detected
-from src.ppe_detection.ppe_detection import PPEDetector, is_ppe_present
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from frame_detection.frame_detection import FrameDetector
+from person_detection.person_detection import PersonDetector, is_person_detected
+from ppe_detection.ppe_detection import PPEDetector, is_ppe_present
 
 class FrameConsumer:
     def __init__(self, input_topic, output_topic):

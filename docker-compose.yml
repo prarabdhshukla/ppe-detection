@@ -1,0 +1,28 @@
+services:
+  zookeeper:
+    image: zookeeper:3.7.2
+    ports:
+      - "2181:2181"
+  
+  kafka:
+    image: ubuntu/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    depends_on:
+      - zookeeper
+
+    
+  app:
+    build: .
+    depends_on:
+      - kafka
+    volumes:
+      - ./data:/app/data
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    command: ["python", "src/utils/kafka_consumer.py"]
+
+
