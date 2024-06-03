@@ -13,8 +13,17 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
     depends_on:
       - zookeeper
-
-    
+  
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ppe_detection
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
   app:
     build: .
     depends_on:
@@ -23,6 +32,8 @@ services:
       - ./data:/app/data
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-    command: ["python", "src/utils/kafka_consumer.py"]
+    command: ["python", "src/utils/kafka_consumer.py"]\
+  volumes:
+    pgdata:
 
 
