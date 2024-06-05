@@ -24,14 +24,26 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   app:
     build: .
     depends_on:
       - kafka
+      - db
     volumes:
       - ./data:/app/data
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - DB_HOST=db
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=ppe_detection
     command: ["python", "src/utils/kafka_consumer.py"]\
   volumes:
     pgdata:
