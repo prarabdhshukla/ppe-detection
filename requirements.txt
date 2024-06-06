@@ -3,3 +3,5 @@ kafka-python
 metaflow
 torch
 torchvision
+websockets
+psycopg2-binary

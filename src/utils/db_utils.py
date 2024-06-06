@@ -1,5 +1,6 @@
 import psycopg2
 import os
+import json
 
 def get_db_connection():
     return psycopg2.connect(

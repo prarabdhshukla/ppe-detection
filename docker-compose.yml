@@ -13,20 +13,20 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
     depends_on:
       - zookeeper
-  
+
   db:
     image: postgres:latest
     environment:
-      POSTGRES_USER: user
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ppe_detection
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./db:/docker-entrypoint-initdb.d
+      - ./src:/scripts  
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user"]
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -41,11 +41,20 @@ services:
     environment:
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - DB_HOST=db
-      - DB_USER=user
+      - DB_USER=postgres
       - DB_PASSWORD=password
       - DB_NAME=ppe_detection
-    command: ["python", "src/utils/kafka_consumer.py"]\
-  volumes:
-    pgdata:
+    command: ["python", "src/utils/kafka_consumer.py"]
+
+  websocket-server:
+    build: .
+    command: ["python", "src/utils/websocket_server.py"]
+    ports:
+      - "3001:3001"
+    depends_on:
+      - app
+
+volumes:
+  pgdata:
 
 

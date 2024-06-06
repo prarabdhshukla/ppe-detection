@@ -4,7 +4,7 @@ import numpy as np
 
 class FrameProducer:
     def __init__(self,topic):
-        self.producer=KafkaProducer(bootstrap_servers='localhost:9092')
+        self.producer=KafkaProducer(bootstrap_servers='kafka:9092')
         self.topic=topic
     
     def send_frame(self, frame):
